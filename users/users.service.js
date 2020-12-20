@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const bcrypt = require('bcrypt');
 const User = require('./users.schema');
 
@@ -13,7 +14,7 @@ async function login(body) {
   if (!password) {
     return ({ message: 'Veuillez vérifier votre mot de passe', status: 400 });
   }
-  return ({ status: 204 });
+  return ({ status: 200, message: { id: user._id, pseudo: user.pseudo } });
 }
 
 async function register(body) {

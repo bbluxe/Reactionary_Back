@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
+
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -7,6 +10,8 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
+
 const server = app.listen(port, () => console.log(`Application en cours d'exécution sur le port ${port}`));
 const io = require('socket.io')(server, {
   cors: {
@@ -22,7 +27,6 @@ io.on('connection', (socket) => {
   const usersLogged = [];
 
   socket.once('join', (joinData) => {
-    const joinedData = joinData;
     socket.join(joinData.room);
     allUsers.push(joinData);
     allUsers.forEach((element) => {
@@ -30,13 +34,14 @@ io.on('connection', (socket) => {
         usersLogged.push(element);
       }
     });
-    io.emit('joined', joinedData);
+    io.emit('joined', joinData);
+    io.in(joinData.room).emit('message', { pseudo: joinData.pseudo, message: 'a rejoint le salon' });
     io.in(joinData.room).emit('users', usersLogged);
   });
 
   socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
 
-  socket.on('message', (data) => socket.to(data.room).emit('message', data));
+  socket.on('message', (data) => io.in(data.room).emit('message', data));
 
   socket.once('leave', (leaveData) => {
     socket.leave(leaveData.room);
