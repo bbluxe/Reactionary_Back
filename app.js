@@ -19,20 +19,19 @@ const io = require('socket.io')(server, {
   },
 });
 const db = require('./_helpers/db');
-const { all } = require('./users/users.controller');
 
 db.dbConnect();
 
 let allUsers = [];
 io.on('connection', (socket) => {
-  const usersLogged = [];
+  let usersLogged = [];
 
-  socket.once('join', (joinData) => {
+  socket.on('join', (joinData) => {
     socket.join(joinData.room);
     allUsers.push(joinData);
-    allUsers.forEach((element) => {
+    usersLogged = allUsers.filter((element) => {
       if (element.room === joinData.room) {
-        usersLogged.push(element);
+        return element;
       }
     });
     io.emit('joined', joinData);
@@ -63,17 +62,20 @@ io.on('connection', (socket) => {
 
   socket.on('message', (data) => io.in(data.room).emit('message', data));
 
-  socket.once('leave', (leaveData) => {
+  socket.on('leave', (leaveData) => {
     socket.leave(leaveData.room);
     allUsers = allUsers.filter((user) => {
-      if (user.id !== leaveData.id) { return user; }
-    });
-    allUsers.forEach((element) => {
-      if (element.room === leaveData.room) {
-        usersLogged.push(element);
+      if (user.idUser !== leaveData.idUser) {
+        return user;
       }
     });
-    io.in(leaveData.room).emit('users', usersLogged);
+    usersLogged = allUsers.filter((element) => {
+      if (element.room === leaveData.room) {
+        return element;
+      }
+    });
+    socket.to(leaveData.room).emit('message', { pseudo: leaveData.pseudo, message: 'a quitté le salon' });
+    socket.to(leaveData.room).emit('users', usersLogged);
   });
 });
 
