@@ -19,6 +19,7 @@ const io = require('socket.io')(server, {
   },
 });
 const db = require('./_helpers/db');
+const { all } = require('./users/users.controller');
 
 db.dbConnect();
 
@@ -35,8 +36,27 @@ io.on('connection', (socket) => {
       }
     });
     io.emit('joined', joinData);
-    io.in(joinData.room).emit('message', { pseudo: joinData.pseudo, message: 'a rejoint le salon' });
+    io.in(joinData.room).emit('message', { pseudo: joinData.pseudo, message: 'a rejoint le salon', date: joinData.date });
     io.in(joinData.room).emit('users', usersLogged);
+    const rooms = [];
+
+    allUsers.forEach((element) => {
+      if (!rooms.includes(element.room)) {
+        rooms.push(element.room);
+      }
+    });
+    io.emit('rooms', rooms);
+  });
+
+  socket.on('getRooms', () => {
+    const rooms = [];
+
+    allUsers.forEach((element) => {
+      if (!rooms.includes(element.room)) {
+        rooms.push(element.room);
+      }
+    });
+    io.emit('rooms', rooms);
   });
 
   socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
