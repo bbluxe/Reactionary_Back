@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
     io.emit('rooms', rooms);
   });
 
-  socket.on('drawing', (data) => socket.broadcast.emit('drawing', data));
+  socket.on('drawing', (data) => socket.to(data.room).emit('drawing', data.draw));
 
   socket.on('message', (data) => io.in(data.room).emit('message', data));
 
