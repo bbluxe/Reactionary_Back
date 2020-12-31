@@ -18,6 +18,7 @@
     "password": "admin",
     "database": "reactionary_db_production",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "use_env_variable": "DATABASE_URL"
   }
 }
