@@ -2,7 +2,7 @@ const env = {
     database: "reactionary_db",
     username: "postgres",
     password: "admin",
-    host: "localhost",
+    host: "db",
     dialect: "postgres"
   };
   
