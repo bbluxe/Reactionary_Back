@@ -81,5 +81,5 @@ io.on('connection', (socket) => {
   });
 });
 
-app.get('/', (req, res) => res.send('Welcome to setting up Node.js project tutorial!'));
+app.get('/', (req, res) => res.send("Welcome on Reactionary's API"));
 app.use('/users', require('./users/users.controller'));
