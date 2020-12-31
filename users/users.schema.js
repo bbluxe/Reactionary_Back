@@ -1,10 +1,16 @@
-const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
-
-const userSchema = new Schema({
-  pseudo: { type: String, unique: true, required: true },
-  password: { type: String, required: true },
-});
-
-module.exports = mongoose.model('User', userSchema);
+module.exports = (sequelize, Sequelize) => {
+  return sequelize.define(
+    "User",
+    {
+      pseudo: {
+        type: Sequelize.STRING,
+        default: undefined
+      },
+      password: {
+        type: Sequelize.STRING,
+        default: undefined
+      },
+    },
+    { freezeTableName: true }
+  );
+};

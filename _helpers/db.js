@@ -1,15 +1,27 @@
-const mongoose = require('mongoose');
+const env = require("./env");
+const Sequelize = require("sequelize");
 
-function dbConnect() {
-  mongoose.connect('mongodb://localhost:27017/reactionary_db', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
-    .then(() => {
-      console.log('Connexion à la DB réussie');
-    })
-    .catch((err) => {
-      console.log('Echec connexion :', err);
-    });
-}
+const sequelize = new Sequelize(env.database, env.username, env.password, {
+  host: env.host,
+  dialect: env.dialect
+});
 
-module.exports = {
-  dbConnect,
-};
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log(
+      "PostgresSQL en cours avec Sequelize avec la db " + env.database
+    );
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
+const db = {};
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+//Création des champs de la bdd via leur route
+db.User = require("../users/users.schema")(sequelize, Sequelize);
+
+module.exports = db;

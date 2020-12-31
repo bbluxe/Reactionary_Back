@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const bcrypt = require('bcrypt');
-const User = require('./users.schema');
+const db = require("../_helpers/db")
+const User = db.User;
 
 async function login(body) {
   if (body === undefined || body.pseudo === undefined || body.password === undefined) {

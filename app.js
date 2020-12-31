@@ -20,7 +20,9 @@ const io = require('socket.io')(server, {
 });
 const db = require('./_helpers/db');
 
-db.dbConnect();
+db.sequelize.sync({ force: false }).then(() => {
+  console.log("DB Create");
+});
 
 let allUsers = [];
 io.on('connection', (socket) => {
