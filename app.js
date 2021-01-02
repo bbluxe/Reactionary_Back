@@ -9,7 +9,6 @@ const app = express();
 const port = 3000;
 const { Client } = require('pg');
 
-client.connect();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
@@ -28,6 +27,8 @@ const client = new Client({
     rejectUnauthorized: false
   }
 });
+
+client.connect();
 
 // db.sequelize.sync({ force: false }).then(() => {
 //   console.log("DB Create");
