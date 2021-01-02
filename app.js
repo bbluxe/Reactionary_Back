@@ -9,6 +9,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 const { Client } = require('pg');
 
+client.connect();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
