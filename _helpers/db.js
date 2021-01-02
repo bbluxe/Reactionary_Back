@@ -1,10 +1,23 @@
 const env = require("./env");
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize(env.database, env.username, env.password, {
-  host: env.host,
-  dialect: env.dialect
-});
+if (process.env.HEROKU_POSTGRESQL_BRONZE_URL) {
+  // the application is executed on Heroku ... use the postgres database
+  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+    dialect:  'postgres',
+    protocol: 'postgres',
+    port:     match[4],
+    host:     match[3],
+    logging:  true //false
+  });
+} else { 
+  const sequelize = new Sequelize(env.database, env.username, env.password, {
+    host: env.host,
+    dialect: env.dialect
+  });
+}
+
+const test = new Sequelize
 
 sequelize
   .authenticate()
