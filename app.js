@@ -1,5 +1,6 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
+/* eslint-disable no-console */
 
 const express = require('express');
 const cors = require('cors');
@@ -7,7 +8,6 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = process.env.PORT || 8080;
-const { Client } = require('pg');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +22,7 @@ const io = require('socket.io')(server, {
 const db = require('./_helpers/db');
 
 db.sequelize.sync({ force: false }).then(() => {
-  console.log("DB Create");
+  console.log('DB Create');
 });
 
 let allUsers = [];

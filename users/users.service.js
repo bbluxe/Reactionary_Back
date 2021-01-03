@@ -1,13 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 const bcrypt = require('bcrypt');
-const db = require("../_helpers/db")
-const User = db.User;
+const db = require('../_helpers/db');
+
+const { User } = db;
 
 async function login(body) {
   if (body === undefined || body.pseudo === undefined || body.password === undefined) {
     return ({ message: 'Veuillez renseigner tout les champs', status: 400 });
   }
-  const user = await User.findOne({ pseudo: body.pseudo });
+  const user = await User.findOne({ where: { pseudo: body.pseudo } });
   if (!user) {
     return ({ message: 'Veuillez vérifier votre pseudo', status: 400 });
   }
@@ -22,7 +23,7 @@ async function register(body) {
   if (body === undefined || body.pseudo === undefined || body.password === undefined) {
     return ({ message: 'Veuillez renseigner tout les champs', status: 400 });
   }
-  const user = await User.findOne({ pseudo: body.pseudo });
+  const user = await User.findOne({ where: { pseudo: body.pseudo } });
   if (user) {
     return ({ message: 'Pseudo déjà utilisé', status: 400 });
   }
