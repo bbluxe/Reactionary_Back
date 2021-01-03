@@ -2,9 +2,9 @@ const env = require("./env");
 const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(env.database, env.username, env.password, {
-    host: env.host,
-    dialect: env.dialect
-  });
+  host: env.host,
+  dialect: env.dialect
+});
 
 sequelize
   .authenticate()
