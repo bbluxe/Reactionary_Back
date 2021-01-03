@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = 3000;
-const { Client } = require('pg');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,15 +19,6 @@ const io = require('socket.io')(server, {
   },
 });
 const db = require('./_helpers/db');
-
-// const client = new Client({
-//   connectionString: process.env.DATABASE_URL,
-//   ssl: {
-//     rejectUnauthorized: false
-//   }
-// });
-
-// client.connect();
 
 db.sequelize.sync({ force: false }).then(() => {
   console.log("DB Create");

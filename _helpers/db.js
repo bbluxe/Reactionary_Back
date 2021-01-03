@@ -6,8 +6,6 @@ const sequelize = new Sequelize(env.database, env.username, env.password, {
   dialect: env.dialect
 });
 
-const test = new Sequelize
-
 sequelize
   .authenticate()
   .then(() => {
