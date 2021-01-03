@@ -18,11 +18,20 @@ const io = require('socket.io')(server, {
     origin: '*',
   },
 });
-const db = require('./_helpers/db');
+// const db = require('./_helpers/db');
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log("DB Create");
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
+
+client.connect();
+
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log("DB Create");
+// });
 
 let allUsers = [];
 io.on('connection', (socket) => {
