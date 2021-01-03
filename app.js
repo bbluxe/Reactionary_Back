@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 const port = process.env.PORT || 8080;
+const { Client } = require('pg');
 
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
