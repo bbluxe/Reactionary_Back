@@ -1,4 +1,4 @@
-// const env = {
+const env = {
 //     database: "reactionary_db",
 //     username: "postgres",
 //     password: "admin",
